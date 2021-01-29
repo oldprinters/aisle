@@ -29,6 +29,7 @@ public:
 	void trigger();	//изменение состояния на обратное
 	void setDim(int l);
 	void setMaxLevel(int i);
+	int getMaxLevel(){return maxLevel;}
 	virtual void cycle();
 };
 
