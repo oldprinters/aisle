@@ -192,7 +192,7 @@ void setup() {
     }    
   }
 }
-//************************************
+//************************************  добавить режим folow me. Задержка 5 сек при выключении света
 void fShort(){
   if(security){
     security = false;
@@ -205,7 +205,7 @@ void fShort(){
     client.publish(apb, msg);
   }
 }
-//*************************************
+//************************************* 
 void fDouble(){
   security = !security;
   if(security){
