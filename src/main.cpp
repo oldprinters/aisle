@@ -19,7 +19,7 @@ const int PIN_BUTTON = 16;
 const int LED_BLINK_R = 26;  //мигающий светодиод постановки на охрану
 const int LED_BLINK_G = 25;  //мигающий светодиод
 const int LED_BLINK_B = 27;  //мигающий светодиод
-
+//i2c sda-21, scl-22
 OneLed light(BUILTIN_LED);
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -34,14 +34,14 @@ char msg[MSG_BUFFER_SIZE];
 int value{};
 
 
-const char* LedBlink_G="aisle/ledBlinkG";
-const char* LedBlink_B="aisle/ledBlinkB";
-const char* apb="aisle/press_button";
-const char* msg_motion="aisle/motion";
-const char* extLight = "aisle/ext_light";
-const char* topic_security = "aisle/security";
-const char* TopicMaxLevel = "aisle/maxLevel";
-const char* Topic_Light = "aisle/light";
+const char* LedBlink_G="aisle_/ledBlinkG";
+const char* LedBlink_B="aisle_/ledBlinkB";
+const char* apb="aisle_/press_button";
+const char* msg_motion="aisle_/motion";
+const char* extLight = "aisle_/ext_light";
+const char* topic_security = "aisle_/security";
+const char* TopicMaxLevel = "aisle_/maxLevel";
+const char* Topic_Light = "aisle_/light";
 volatile int buttonStatus{};
 volatile bool ir_motion{};
 bool ledStatus{};
@@ -119,10 +119,10 @@ void reconnect() {
     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
 //      client.publish("outTopic", "hello world");
-      client.subscribe("aisle/light");
-      client.subscribe("aisle/maxLevel");
-      client.subscribe("aisle/ledBlinkB");
-      client.subscribe("aisle/ledBlinkG");
+      client.subscribe("aisle_/light");
+      client.subscribe("aisle_/maxLevel");
+      client.subscribe("aisle_/ledBlinkB");
+      client.subscribe("aisle_/ledBlinkG");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -173,6 +173,7 @@ void setup() {
     ir_motion = false;
     if(!irLightOn) {
       client.publish(msg_motion, "1");
+      client.publish(msg_motion, "0");
       irLightOn = true;
     }
     tMotion.setTimer();
@@ -240,6 +241,7 @@ void loop() {
   client.loop();
   //.................................
   ir_motion_func();  
+  // Serial.println(digitalRead(IR_DATA));
   //.................................
   if(buttonStatus){
     buttonStatus = 0;
